@@ -1,0 +1,26 @@
+[{
+  "id": 1,
+  "name": "First Folder",
+  "isFolder": true,
+  "items": [
+    {
+      "id": 3,
+      "name": "Empty folder",
+      "isFolder": true,
+      "items": []
+    },
+    {
+      "id": 4,
+      "name": "testFile.tsx",
+      "isFolder": false,
+      "items": null
+    }
+  ]
+},
+{
+  "id": 2,
+  "name": "fileName.js",
+  "isFolder": false,
+  "items": null
+}
+]
