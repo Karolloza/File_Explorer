@@ -20,7 +20,6 @@ const StyledButton = ({ text, setJsonData }: StyledButtonProps) => {
       if (typeof text === "string") {
         try {
           const data = JSON.parse(text);
-          console.log("data", data);
           setJsonData(data);
         } catch (error) {
           console.error("Error parsing JSON:", error);

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Logo from "./icons/Logo";
+import LogoIcon from "./icons/LogoIcon";
 const S = {
   Layout: styled.div`
     background-color: gray;
@@ -24,7 +24,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => (
   <S.Layout>
     <S.Header>
-      <Logo />
+      <LogoIcon />
     </S.Header>
     <S.Section>
       <S.Content>{children}</S.Content>

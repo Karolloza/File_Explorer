@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import StyledButton from "../components/StyledButton";
+import DashboardContent from "../components/DashboardContent";
 import { Item } from "../types";
 
 const S = {
@@ -13,6 +14,7 @@ const Dashboard = () => {
   return (
     <S.Dashboard>
       <StyledButton text="Import file" setJsonData={setJsonData} />
+      <DashboardContent data={jsonData} />
     </S.Dashboard>
   );
 };

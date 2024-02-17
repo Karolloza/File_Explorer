@@ -1,6 +1,6 @@
 [{
   "id": 1,
-  "name": "First Folder",
+  "name": "Filled Folder",
   "isFolder": true,
   "items": [
     {
@@ -22,5 +22,11 @@
   "name": "fileName.js",
   "isFolder": false,
   "items": null
+},
+{
+  "id": 5,
+  "name": "Empty Folder",
+  "isFolder": true,
+  "items": []
 }
 ]
