@@ -5,7 +5,7 @@ const S = {};
 
 interface StyledButtonProps {
   text: string;
-  setJsonData: (data: Item[] | null) => void;
+  setJsonData: (data: Item[]) => void;
 }
 
 const StyledButton = ({ text, setJsonData }: StyledButtonProps) => {

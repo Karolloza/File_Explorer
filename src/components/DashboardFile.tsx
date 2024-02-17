@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import {
   FileIcon,
@@ -27,18 +28,50 @@ const S = {
     right: 10px;
     width: 14px;
   `,
+  StyledEditIcon: styled(EditIcon)``,
 };
 
 interface DashboardFileProps {
-  data: Item;
+  fileData: Item;
+  data: Item[];
+  setJsonData: (data: Item[]) => void;
 }
 
-const DashboardFile = ({ data }: DashboardFileProps) => {
+const DashboardFile = ({ fileData, data, setJsonData }: DashboardFileProps) => {
+  const [editFileName, setEditFileName] = useState(false);
+  const [fileName, setFileName] = useState(fileData.name);
+
+  const handleInputChange = (event: any) => {
+    setFileName(event.target.value);
+  };
+  const findById = (items: Item[], id: string) =>
+    items.find((item) => item.id === id);
+
+  const handleInputSave = () => {
+    const editedItem = findById(data, fileData.id);
+    if (editedItem) {
+      editedItem.name = fileName;
+      const index = data.findIndex((object) => object.id === fileData.id);
+      const newData = [...data];
+      newData[index] = editedItem;
+      setJsonData(newData);
+    }
+
+    setEditFileName(false);
+  };
+
+  const handleDelete = () => {
+    const index = data.findIndex((object) => object.id === fileData.id);
+    const newData = [...data];
+    newData.splice(index, 1);
+    setJsonData(newData);
+  };
+
   return (
     <S.DashboardFile>
       <div>
-        {data.isFolder ? (
-          data.items.length ? (
+        {fileData.isFolder ? (
+          fileData.items.length ? (
             <FolderFilledIcon />
           ) : (
             <FolderEmptyIcon />
@@ -47,15 +80,25 @@ const DashboardFile = ({ data }: DashboardFileProps) => {
           <FileIcon />
         )}
       </div>
-      <div>
-        {data.name} {data.items && !data.items.length && "(empty)"}
-      </div>
+      {!editFileName ? (
+        <div>{fileName}</div>
+      ) : (
+        <div>
+          <input
+            type="text"
+            value={fileName}
+            onChange={handleInputChange}
+          ></input>
+          <button onClick={handleInputSave}>Save</button>
+        </div>
+      )}
+
       <S.DashboardFileActionsContainer>
         <div>
-          <EditIcon />
+          <S.StyledEditIcon onClick={() => setEditFileName(true)} />
         </div>
         <div>
-          <RemoveIcon />
+          <RemoveIcon onClick={() => handleDelete()} />
         </div>
       </S.DashboardFileActionsContainer>
     </S.DashboardFile>

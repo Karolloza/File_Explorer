@@ -9,12 +9,11 @@ const S = {
 };
 
 const Dashboard = () => {
-  const [jsonData, setJsonData] = useState<Item[] | null>(null);
-  console.log("jsonData", jsonData);
+  const [jsonData, setJsonData] = useState<any>([]);
   return (
     <S.Dashboard>
       <StyledButton text="Import file" setJsonData={setJsonData} />
-      <DashboardContent data={jsonData} />
+      <DashboardContent data={jsonData} setJsonData={setJsonData} />
     </S.Dashboard>
   );
 };

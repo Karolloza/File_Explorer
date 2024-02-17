@@ -11,11 +11,19 @@ const S = {
 
 interface DashboardContentProps {
   data: Item[] | null;
+  setJsonData: (data: Item[]) => void;
 }
 
-const DashboardContent = ({ data }: DashboardContentProps) => {
+const DashboardContent = ({ data, setJsonData }: DashboardContentProps) => {
   const renderJsonData = () => {
-    return data?.map((el) => <DashboardFile data={el} key={el.id} />);
+    return data?.map((el) => (
+      <DashboardFile
+        fileData={el}
+        data={data}
+        key={el.id}
+        setJsonData={setJsonData}
+      />
+    ));
   };
   return <S.DashboardContent>{renderJsonData()}</S.DashboardContent>;
 };
