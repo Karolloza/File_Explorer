@@ -28,7 +28,6 @@ const S = {
     right: 10px;
     width: 14px;
   `,
-  StyledEditIcon: styled(EditIcon)``,
 };
 
 interface DashboardFileProps {
@@ -95,7 +94,7 @@ const DashboardFile = ({ fileData, data, setJsonData }: DashboardFileProps) => {
 
       <S.DashboardFileActionsContainer>
         <div>
-          <S.StyledEditIcon onClick={() => setEditFileName(true)} />
+          <EditIcon onClick={() => setEditFileName(true)} />
         </div>
         <div>
           <RemoveIcon onClick={() => handleDelete()} />

@@ -3,12 +3,12 @@ import { Item } from "../types";
 
 const S = {};
 
-interface StyledButtonProps {
+interface ImportDataButtonProps {
   text: string;
   setJsonData: (data: Item[]) => void;
 }
 
-const StyledButton = ({ text, setJsonData }: StyledButtonProps) => {
+const ImportDataButton = ({ text, setJsonData }: ImportDataButtonProps) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) {
@@ -39,4 +39,4 @@ const StyledButton = ({ text, setJsonData }: StyledButtonProps) => {
     />
   );
 };
-export default StyledButton;
+export default ImportDataButton;
