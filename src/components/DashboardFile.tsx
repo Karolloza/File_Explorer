@@ -7,6 +7,7 @@ import {
   EditIcon,
   RemoveIcon,
 } from "./icons";
+import { removeNestedObjectById, updateObjectById } from "../utils";
 import { Item } from "../types";
 
 const S = {
@@ -34,36 +35,61 @@ interface DashboardFileProps {
   fileData: Item;
   data: Item[];
   setJsonData: (data: Item[]) => void;
+  setFolderPath: (data: string | ((prevState: string) => string)) => void;
+  currentTreeJsonData: Item;
+  setCurrentTreeJsonData: (data: Item) => void;
+  initialData: Item[];
 }
 
-const DashboardFile = ({ fileData, data, setJsonData }: DashboardFileProps) => {
+const DashboardFile = ({
+  fileData,
+  data,
+  setJsonData,
+  setFolderPath,
+  currentTreeJsonData,
+  setCurrentTreeJsonData,
+  initialData,
+}: DashboardFileProps) => {
   const [editFileName, setEditFileName] = useState(false);
   const [fileName, setFileName] = useState(fileData.name);
+  const currentTree = currentTreeJsonData?.items || data;
 
   const handleInputChange = (event: any) => {
     setFileName(event.target.value);
   };
+
   const findById = (items: Item[], id: string) =>
     items.find((item) => item.id === id);
 
   const handleInputSave = () => {
-    const editedItem = findById(data, fileData.id);
+    const editedItem = findById(currentTree, fileData.id);
     if (editedItem) {
       editedItem.name = fileName;
-      const index = data.findIndex((object) => object.id === fileData.id);
-      const newData = [...data];
-      newData[index] = editedItem;
-      setJsonData(newData);
+      setJsonData(updateObjectById(initialData, fileData.id, editedItem));
     }
 
     setEditFileName(false);
   };
 
   const handleDelete = () => {
-    const index = data.findIndex((object) => object.id === fileData.id);
-    const newData = [...data];
-    newData.splice(index, 1);
-    setJsonData(newData);
+    if (initialData) {
+      setJsonData(removeNestedObjectById(initialData, fileData.id));
+
+      const index = currentTree.findIndex(
+        (object) => object.id === fileData.id
+      );
+      const newData = [...currentTree];
+      newData.splice(index, 1);
+      setCurrentTreeJsonData({ ...currentTreeJsonData, items: [...newData] });
+    }
+  };
+
+  const handleFolderOpen = () => {
+    const openFolder = findById(currentTree, fileData.id);
+    if (fileData.isFolder && openFolder) {
+      setFolderPath((prevState) => `${prevState}\\${fileData.name}`);
+      setCurrentTreeJsonData(openFolder);
+    }
   };
 
   return (
@@ -99,6 +125,11 @@ const DashboardFile = ({ fileData, data, setJsonData }: DashboardFileProps) => {
         <div>
           <RemoveIcon onClick={() => handleDelete()} />
         </div>
+        {fileData.isFolder && (
+          <div>
+            <button onClick={handleFolderOpen}>Open</button>
+          </div>
+        )}
       </S.DashboardFileActionsContainer>
     </S.DashboardFile>
   );

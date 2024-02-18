@@ -6,5 +6,6 @@ import EditIcon from './EditIcon'
 import RemoveIcon from './RemoveIcon'
 import AddFileIcon from './AddFileIcon'
 import AddFolderIcon from './AddFolderIcon'
+import BackArrowIcon from './BackArrowIcon'
 
-export { FileIcon, FolderEmptyIcon, FolderFilledIcon, LogoIcon, EditIcon, RemoveIcon, AddFileIcon, AddFolderIcon }
+export { FileIcon, FolderEmptyIcon, FolderFilledIcon, LogoIcon, EditIcon, RemoveIcon, AddFileIcon, AddFolderIcon, BackArrowIcon }

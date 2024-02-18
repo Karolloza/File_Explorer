@@ -7,13 +7,18 @@
       "id": 3,
       "name": "Empty folder",
       "isFolder": true,
+      "items": [{
+      "id": 5,
+      "name": "testFile.tsx",
+      "isFolder": false,
       "items": []
+    }]
     },
     {
       "id": 4,
-      "name": "testFile.tsx",
+      "name": "atestFile.tsx",
       "isFolder": false,
-      "items": null
+      "items": []
     }
   ]
 },
@@ -21,12 +26,6 @@
   "id": 2,
   "name": "fileName.js",
   "isFolder": false,
-  "items": null
-},
-{
-  "id": 5,
-  "name": "Empty Folder",
-  "isFolder": true,
   "items": []
 }
 ]
