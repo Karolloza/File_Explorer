@@ -4,9 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 
 import { Item } from "../types/index";
 import DashboardFile from "./DashboardFile";
-import { AddFileIcon, AddFolderIcon } from "../components/icons";
-import { updateObjectById } from "../utils";
-import { BackArrowIcon } from "./icons";
+import { updateObjectById, findParentById, downloadJson } from "../utils";
+import {
+  BackArrowIcon,
+  AddFileIcon,
+  AddFolderIcon,
+  DownloadFileIcon,
+} from "./icons";
 
 const S = {
   DashboardContent: styled.div`
@@ -23,7 +27,7 @@ interface DashboardContentProps {
   data: Item[];
   setJsonData: (data: Item[]) => void;
   currentTreeJsonData: Item;
-  setCurrentTreeJsonData: (data: Item) => void;
+  setCurrentTreeJsonData: (data: Item | null) => void;
 }
 
 const DashboardContent = ({
@@ -67,7 +71,7 @@ const DashboardContent = ({
     } else {
       setJsonData([
         ...data,
-        { id: uuidv4(), name: "customFilerName", isFolder: false, items: [] },
+        { id: newId, name: "customFilerName", isFolder: false, items: [] },
       ]);
     }
   };
@@ -110,6 +114,17 @@ const DashboardContent = ({
     }
   };
 
+  const handleBackPress = () => {
+    //bug here when navigating back
+    if (currentTreeJsonData?.id) {
+      let parent = findParentById(data, currentTreeJsonData.id);
+      setCurrentTreeJsonData(parent);
+    }
+    // else {
+    //   setCurrentTreeJsonData(null);
+    // }
+  };
+
   const renderJsonData = () => {
     if (currentTreeJsonData) {
       return currentTreeJsonData.items.map((el) => (
@@ -143,13 +158,14 @@ const DashboardContent = ({
     <div>
       <S.DashboardContentHeader>
         <div>
-          <BackArrowIcon onClick={() => console.log("go back")} />
+          <BackArrowIcon onClick={handleBackPress} />
         </div>
         <div>Current path: {folderPath}</div>
         {data && (
           <>
             <AddFolderIcon onClick={handleAddFolder} />
             <AddFileIcon onClick={handleAddFile} />
+            <DownloadFileIcon onClick={() => downloadJson(data)} />
           </>
         )}
       </S.DashboardContentHeader>

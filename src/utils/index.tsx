@@ -1,29 +1,23 @@
 import { Item } from "../types";
 
 function removeNestedObjectById(array: Item[], idToRemove: string) {
-  // Filter out the objects at the current level
   return array
-    .filter((obj) => obj.id !== idToRemove) // Remove the object if it matches the idToRemove
+    .filter((obj) => obj.id !== idToRemove)
     .map((obj) => {
       if (obj.items && Array.isArray(obj.items)) {
-        // If the object has an "items" property, recursively remove objects from it
         obj.items = removeNestedObjectById(obj.items, idToRemove);
       }
-      return obj; // Return the modified object
+      return obj;
     });
 }
 
 function updateObjectById(items: Item[], idToReplace: string, newObj: Item) {
-  // Clone the items to avoid mutating the original array
   const newArrayItems = [...items];
 
   function replace(item: Item) {
-    // Check if the current item is the one we want to replace
     if (item.id === idToReplace) {
       return newObj;
     }
-
-    // If the item has a nested 'items' array, apply the replacement recursively
     if (item.items.length) {
       item.items = item.items.map(replace);
     }
@@ -34,4 +28,45 @@ function updateObjectById(items: Item[], idToReplace: string, newObj: Item) {
   return newArrayItems.map(replace);
 }
 
-export { removeNestedObjectById, updateObjectById };
+function findParentById(items: Item[], id: string) {
+  let parent = null;
+
+  function search(items: Item[], parentId: string | null) {
+    for (const item of items) {
+      if (item.id === id) {
+        return parentId;
+      } else if (item.isFolder && item.items && item.items.length) {
+        const foundParentId = search(item.items, item.id);
+        if (foundParentId !== null) {
+          parent = items.find((x) => x.id === foundParentId);
+          break;
+        }
+      }
+    }
+  }
+
+  search(items, null);
+  return parent;
+}
+
+const downloadJson = (data: Item[]) => {
+  const jsonFormat = JSON.stringify(data);
+  const blob = new Blob([jsonFormat], { type: "application/json" });
+
+  const href = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = href;
+  link.download = "newFile";
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  URL.revokeObjectURL(href);
+};
+
+export {
+  removeNestedObjectById,
+  updateObjectById,
+  findParentById,
+  downloadJson,
+};

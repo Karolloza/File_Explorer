@@ -1,21 +1,27 @@
 [{
-  "id": 1,
+  "id": "1",
   "name": "Filled Folder",
   "isFolder": true,
   "items": [
     {
-      "id": 3,
+      "id": "3",
       "name": "Empty folder",
       "isFolder": true,
       "items": [{
-      "id": 5,
-      "name": "testFile.tsx",
-      "isFolder": false,
-      "items": []
-    }]
+        "id": "5",
+        "name": "testFile",
+        "isFolder": true,
+        "items": [{
+          "id": "6",
+          "name": "testFil2e.tsx",
+          "isFolder": false,
+          "items": []
+          }
+        ]
+      }]
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "atestFile.tsx",
       "isFolder": false,
       "items": []
@@ -23,7 +29,7 @@
   ]
 },
 {
-  "id": 2,
+  "id": "2",
   "name": "fileName.js",
   "isFolder": false,
   "items": []
