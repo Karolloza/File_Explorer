@@ -1,35 +1,27 @@
-import React from "react";
-import styled from "styled-components";
-import LogoIcon from "./icons/LogoIcon";
+import React from 'react'
+import styled from 'styled-components'
+
 const S = {
   Layout: styled.div`
-    background-color: gray;
+    max-width: 80%;
+    margin: 0 auto;
   `,
-  Header: styled.div``,
-  Section: styled.div`
-    display: flex;
-  `,
+  Section: styled.div``,
   Sidebar: styled.div`
     flex: 1;
   `,
-  Content: styled.div`
-    flex: 6;
-  `,
-};
+}
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const Layout = ({ children }: LayoutProps) => (
   <S.Layout>
-    <S.Header>
-      <LogoIcon />
-    </S.Header>
     <S.Section>
-      <S.Content>{children}</S.Content>
+      <div>{children}</div>
     </S.Section>
   </S.Layout>
-);
+)
 
-export default Layout;
+export default Layout
