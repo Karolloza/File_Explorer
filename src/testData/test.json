@@ -1,0 +1,27 @@
+[
+  {
+    "id": "1",
+    "name": "Filled Folder",
+    "isFolder": true,
+    "items": [
+      {
+        "id": "4",
+        "name": "test.js",
+        "isFolder": false,
+        "items": []
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "fileName.js",
+    "isFolder": false,
+    "items": []
+  },
+  {
+    "id": "3",
+    "name": "Empty folder.js",
+    "isFolder": true,
+    "items": []
+  }
+]

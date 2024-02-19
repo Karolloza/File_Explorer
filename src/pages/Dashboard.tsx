@@ -1,7 +1,8 @@
-import { useState } from "react";
-import styled from "styled-components";
-import ImportDataButton from "../components/ImportDataButton";
-import DashboardContent from "../components/DashboardContent";
+import { useState } from 'react'
+import styled from 'styled-components'
+import { Item } from '../types'
+import ImportDataButton from '../components/ImportDataButton'
+import DashboardContent from '../components/DashboardContent'
 
 const S = {
   Dashboard: styled.div``,
@@ -9,16 +10,16 @@ const S = {
     display: flex;
     gap: 20px;
   `,
-};
+}
 
 const Dashboard = () => {
-  const [jsonData, setJsonData] = useState<any>(null);
-  const [currentTreeJsonData, setCurrentTreeJsonData] = useState<any>(null);
-
+  const [jsonData, setJsonData] = useState<any>(null)
+  const [currentTreeJsonData, setCurrentTreeJsonData] = useState<any>(null)
   return (
     <S.Dashboard>
       <S.DashboardActionSection>
-        <ImportDataButton text="Import file" setJsonData={setJsonData} />
+        <ImportDataButton text='Import file' setJsonData={setJsonData} />
+        <input type='text'></input>
       </S.DashboardActionSection>
       <DashboardContent
         data={jsonData}
@@ -27,7 +28,7 @@ const Dashboard = () => {
         setCurrentTreeJsonData={setCurrentTreeJsonData}
       />
     </S.Dashboard>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

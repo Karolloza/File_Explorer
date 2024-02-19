@@ -1,14 +1,18 @@
-import { useState } from "react";
-import styled from "styled-components";
+import { useState } from 'react'
+import styled from 'styled-components'
 import {
   FileIcon,
   FolderEmptyIcon,
   FolderFilledIcon,
   EditIcon,
   RemoveIcon,
-} from "./icons";
-import { removeNestedObjectById, updateObjectById } from "../utils";
-import { Item } from "../types";
+} from './icons'
+import {
+  removeNestedObjectById,
+  updateObjectById,
+  findAllValuesByKey,
+} from '../utils'
+import { Item } from '../types'
 
 const S = {
   DashboardFile: styled.div`
@@ -29,68 +33,68 @@ const S = {
     right: 10px;
     width: 14px;
   `,
-};
+}
 
 interface DashboardFileProps {
-  fileData: Item;
-  data: Item[];
-  setJsonData: (data: Item[]) => void;
-  setFolderPath: (data: string | ((prevState: string) => string)) => void;
-  currentTreeJsonData: Item;
-  setCurrentTreeJsonData: (data: Item) => void;
-  initialData: Item[];
+  fileData: Item
+  data: Item[]
+  setJsonData: (data: Item[]) => void
+  currentTreeJsonData: Item
+  setCurrentTreeJsonData: (data: Item) => void
+  initialData: Item[]
 }
 
 const DashboardFile = ({
   fileData,
   data,
   setJsonData,
-  setFolderPath,
   currentTreeJsonData,
   setCurrentTreeJsonData,
   initialData,
 }: DashboardFileProps) => {
-  const [editFileName, setEditFileName] = useState(false);
-  const [fileName, setFileName] = useState(fileData.name);
-  const currentTree = currentTreeJsonData?.items || data;
+  const [editFileName, setEditFileName] = useState(false)
+  const [fileName, setFileName] = useState(fileData.name)
+  const currentTree = currentTreeJsonData?.items || data
 
   const handleInputChange = (event: any) => {
-    setFileName(event.target.value);
-  };
+    setFileName(event.target.value)
+  }
 
   const findById = (items: Item[], id: string) =>
-    items.find((item) => item.id === id);
+    items.find((item) => item.id === id)
 
   const handleInputSave = () => {
-    const editedItem = findById(currentTree, fileData.id);
+    const editedItem = findById(currentTree, fileData.id)
+    let allNamesArr = findAllValuesByKey(initialData, 'name')
     if (editedItem) {
-      editedItem.name = fileName;
-      setJsonData(updateObjectById(initialData, fileData.id, editedItem));
+      if (allNamesArr.includes(fileName) && fileName !== editedItem.name) {
+        setFileName(editedItem.name)
+        alert('This name already exists')
+      } else {
+        editedItem.name = fileName
+        setJsonData(updateObjectById(initialData, fileData.id, editedItem))
+      }
     }
-
-    setEditFileName(false);
-  };
+    setEditFileName(false)
+  }
 
   const handleDelete = () => {
     if (initialData) {
-      setJsonData(removeNestedObjectById(initialData, fileData.id));
+      setJsonData(removeNestedObjectById(initialData, fileData.id))
 
-      const index = currentTree.findIndex(
-        (object) => object.id === fileData.id
-      );
-      const newData = [...currentTree];
-      newData.splice(index, 1);
-      setCurrentTreeJsonData({ ...currentTreeJsonData, items: [...newData] });
+      const index = currentTree.findIndex((object) => object.id === fileData.id)
+      const newData = [...currentTree]
+      newData.splice(index, 1)
+      setCurrentTreeJsonData({ ...currentTreeJsonData, items: [...newData] })
     }
-  };
+  }
 
   const handleFolderOpen = () => {
-    const openFolder = findById(currentTree, fileData.id);
+    const openFolder = findById(currentTree, fileData.id)
     if (fileData.isFolder && openFolder) {
-      setFolderPath((prevState) => `${prevState}\\${fileData.name}`);
-      setCurrentTreeJsonData(openFolder);
+      setCurrentTreeJsonData(openFolder)
     }
-  };
+  }
 
   return (
     <S.DashboardFile>
@@ -110,7 +114,7 @@ const DashboardFile = ({
       ) : (
         <div>
           <input
-            type="text"
+            type='text'
             value={fileName}
             onChange={handleInputChange}
           ></input>
@@ -132,7 +136,7 @@ const DashboardFile = ({
         )}
       </S.DashboardFileActionsContainer>
     </S.DashboardFile>
-  );
-};
+  )
+}
 
-export default DashboardFile;
+export default DashboardFile

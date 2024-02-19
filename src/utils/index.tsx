@@ -1,72 +1,95 @@
-import { Item } from "../types";
+import { Item, NestedObjectArray } from '../types'
 
 function removeNestedObjectById(array: Item[], idToRemove: string) {
   return array
     .filter((obj) => obj.id !== idToRemove)
     .map((obj) => {
       if (obj.items && Array.isArray(obj.items)) {
-        obj.items = removeNestedObjectById(obj.items, idToRemove);
+        obj.items = removeNestedObjectById(obj.items, idToRemove)
       }
-      return obj;
-    });
+      return obj
+    })
 }
 
 function updateObjectById(items: Item[], idToReplace: string, newObj: Item) {
-  const newArrayItems = [...items];
+  const newArrayItems = [...items]
 
   function replace(item: Item) {
     if (item.id === idToReplace) {
-      return newObj;
+      return newObj
     }
     if (item.items.length) {
-      item.items = item.items.map(replace);
+      item.items = item.items.map(replace)
     }
 
-    return item;
+    return item
   }
 
-  return newArrayItems.map(replace);
+  return newArrayItems.map(replace)
 }
 
 function findParentById(items: Item[], id: string) {
-  let parent = null;
+  let parent = null
 
   function search(items: Item[], parentId: string | null) {
     for (const item of items) {
       if (item.id === id) {
-        return parentId;
+        return parentId
       } else if (item.isFolder && item.items && item.items.length) {
-        const foundParentId = search(item.items, item.id);
+        const foundParentId = search(item.items, item.id)
         if (foundParentId !== null) {
-          parent = items.find((x) => x.id === foundParentId);
-          break;
+          parent = items.find((x) => x.id === foundParentId)
+          break
         }
       }
     }
   }
 
-  search(items, null);
-  return parent;
+  search(items, null)
+  return parent
 }
 
 const downloadJson = (data: Item[]) => {
-  const jsonFormat = JSON.stringify(data);
-  const blob = new Blob([jsonFormat], { type: "application/json" });
+  const jsonFormat = JSON.stringify(data)
+  const blob = new Blob([jsonFormat], { type: 'application/json' })
 
-  const href = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = href;
-  link.download = "newFile";
-  document.body.appendChild(link);
-  link.click();
+  const href = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = href
+  link.download = 'newFile'
+  document.body.appendChild(link)
+  link.click()
 
-  document.body.removeChild(link);
-  URL.revokeObjectURL(href);
-};
+  document.body.removeChild(link)
+  URL.revokeObjectURL(href)
+}
+
+function findAllValuesByKey(obj: NestedObjectArray, key: string): any[] {
+  let results: any[] = []
+
+  function searchForKey(innerObj: NestedObjectArray): void {
+    if (Array.isArray(innerObj)) {
+      innerObj.forEach((element) => {
+        searchForKey(element)
+      })
+    } else if (typeof innerObj === 'object' && innerObj !== null) {
+      if (key in innerObj) {
+        results.push(innerObj[key])
+      }
+      Object.values(innerObj).forEach((value) => {
+        searchForKey(value)
+      })
+    }
+  }
+
+  searchForKey(obj)
+  return results
+}
 
 export {
   removeNestedObjectById,
   updateObjectById,
   findParentById,
   downloadJson,
-};
+  findAllValuesByKey,
+}
