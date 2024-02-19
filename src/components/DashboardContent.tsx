@@ -203,14 +203,10 @@ const DashboardContent = ({
             CLOSE
           </button>
         </dialog>
-        {data && (
-          <div>
-            <BackArrowIcon onClick={handleBackPress} />
-          </div>
-        )}
 
         {data && (
           <>
+            <BackArrowIcon onClick={handleBackPress} />
             <AddFolderIcon
               onClick={() => {
                 dialog && dialog.showModal()
